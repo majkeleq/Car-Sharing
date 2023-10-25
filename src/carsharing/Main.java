@@ -1,10 +1,6 @@
 package carsharing;
 
-import carsharing.db.DatabaseCreator;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
+import carsharing.db.Database;
 
 public class Main {
 
@@ -17,6 +13,7 @@ public class Main {
                 break;
             }
         }
-        new DatabaseCreator().run(DB_NAME);
+        Database db = new Database(DB_NAME);
+        db.run();
     }
 }
