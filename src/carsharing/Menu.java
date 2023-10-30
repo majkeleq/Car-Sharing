@@ -87,9 +87,7 @@ public class Menu {
                     List<Car> carList = dbService.listCars(company);
                     if (!carList.isEmpty()) {
                         AtomicInteger index = new AtomicInteger(1);
-                        carList.forEach(c -> {
-                            System.out.printf("%d. %s\n", index.getAndIncrement(),c);
-                        });
+                        carList.forEach(c -> System.out.printf("%d. %s\n", index.getAndIncrement(),c));
                     } else {
                         System.out.print("\nThe car list is empty!\n");
                     }

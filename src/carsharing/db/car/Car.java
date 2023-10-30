@@ -1,7 +1,7 @@
 package carsharing.db.car;
 
 public class Car {
-    private String name;
+    private final String name;
     private int companyId;
 
     public Car(String name) {
