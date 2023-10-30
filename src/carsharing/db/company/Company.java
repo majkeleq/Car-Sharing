@@ -1,4 +1,4 @@
-package carsharing.db;
+package carsharing.db.company;
 
 public class Company {
     private int id;
