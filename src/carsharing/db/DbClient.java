@@ -8,14 +8,16 @@ import java.util.*;
 
 public class DbClient {
     private final String DRIVER_CLASS_NAME = "org.h2.Driver";
-    private final String DB_URL = "jdbc:h2:./src/carsharing/db/"; //check
-    //private final String DB_URL = "jdbc:h2:./Car Sharing/task/src/carsharing/db/"; //RUN
+    //private final String DB_URL = "jdbc:h2:./src/carsharing/db/"; //check
+    private final String DB_URL = "jdbc:h2:./Car Sharing/task/src/carsharing/db/"; //RUN
     private final String DB_NAME;
     private final String DROP_COMPANY = "DROP TABLE IF EXISTS COMPANY";
     private final String DROP_CAR = "DROP TABLE IF EXISTS CAR";
+    private final String DROP_CUSTOMER = "DROP TABLE IF EXISTS CUSTOMER";
 
     public DbClient(String DB_NAME) {
         this.DB_NAME = DB_NAME;
+        run(DROP_CUSTOMER);
         run(DROP_CAR);
         run(DROP_COMPANY);
     }
