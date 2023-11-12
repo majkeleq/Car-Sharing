@@ -1,13 +1,9 @@
 package carsharing;
 
-import carsharing.db.car.Car;
-import carsharing.db.company.Company;
 import carsharing.db.DbClient;
 import carsharing.db.DbService;
 
-import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Menu {
     private final DbClient dbClient;

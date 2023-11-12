@@ -31,26 +31,6 @@ public class ManagerMenu {
 
     private void listCompanies(Scanner sc) {
         List<Company> companyList = dbService.findAllCompanies();
-        /*if (companyList.isEmpty()) {
-            System.out.println("The company list is empty!");
-        } else {
-            StringBuilder result = new StringBuilder();
-            while (true) {
-                result.setLength(0);
-                result.append("Choose company:\n");
-                companyList.forEach(company -> result.append(company).append("\n"));
-                result.append("0. Back");
-                System.out.println(result);
-                int input = Integer.parseInt(sc.nextLine());
-                if (input == 0) {
-                    break;
-                }
-                if (companyList.stream().map(Company::getId).filter(id -> id == input).count() == 1) {
-                    companyContext(sc, dbService.findCompanyById(input));
-                    break;
-                }
-            }
-        }*/
         int input = dbService.getContext(companyList, "company", sc);
         while ( input != 0) {
             companyContext(sc, dbService.findCompanyById(input));

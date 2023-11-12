@@ -9,6 +9,7 @@ import carsharing.db.customer.DbCustomerDao;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class DbService {
     private final DbCompanyDao dbCompanyDao;
@@ -44,6 +45,9 @@ public class DbService {
     public List<Car> findAllCompanyCars(Company company) {
         return dbCarDao.findByCompany(company.getId());
     }
+    public List<Car> findAllAvailableCompanyCars(Company company) {
+        return dbCarDao.findAvailableCarsByCompany(company.getId());
+    }
 
     public void addCustomer(Customer customer) {
         dbCustomerDao.add(customer);
@@ -59,18 +63,21 @@ public class DbService {
             System.out.printf("The %s list is empty!\n", listName);
         } else {
             StringBuilder result = new StringBuilder();
-            while (true) {
+            do {
                 result.setLength(0);
                 result.append(String.format("Choose %s:\n", listName));
-                list.forEach(o -> result.append(o.toString()).append("\n"));
+                AtomicInteger index = new AtomicInteger(1);
+                list.forEach(o -> result.append(index.getAndIncrement()).append(". ").append(o.toString()).append("\n"));
                 result.append("0.Back");
                 System.out.println(result);
                 input = Integer.parseInt(sc.nextLine());
-                if (input >= 0 && input <= list.size()) {
-                    break;
-                }
-            }
+            } while (input < 0 || input > list.size());
         }
         return input;
+    }
+    public String rentCar(Customer customer, Car car) {
+        dbCustomerDao.rentCar(customer,car);
+        dbCarDao.rentCar(car);
+        return "You rented a car";
     }
 }

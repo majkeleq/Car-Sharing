@@ -1,7 +1,7 @@
 package carsharing.db.customer;
 
 import carsharing.db.DbClient;
-import carsharing.db.company.Company;
+import carsharing.db.car.Car;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +19,7 @@ public class DbCustomerDao implements CustomerDao{
     private final String ADD_CUSTOMER = "INSERT INTO CUSTOMER (NAME, RENTED_CAR_ID) VALUES ('%s', null)";
     private final String SELECT_CUSTOMER = "SELECT * FROM CUSTOMER WHERE ID = %d";
     private final String SELECT_CUSTOMERS = "SELECT * FROM CUSTOMER";
+    private final String RENT_CAR = "UPDATE customer SET RENTED_CAR_ID = %d WHERE ID = %d";
 
     public DbCustomerDao(DbClient dbClient) {
         this.dbClient = dbClient;
@@ -41,5 +42,10 @@ public class DbCustomerDao implements CustomerDao{
         HashMap<Integer,String> result = dbClient.selectForList(SELECT_CUSTOMERS);
         result.forEach((key, value) -> customerList.add(new Customer(key, value)));
         return customerList;
+    }
+
+    @Override
+    public void rentCar(Customer customer, Car car) {
+        dbClient.run(String.format(RENT_CAR, car.getId(), customer.getId()));
     }
 }

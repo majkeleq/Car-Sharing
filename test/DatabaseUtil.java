@@ -90,18 +90,28 @@ public class DatabaseUtil {
     public void clearCompanyTable() {
         try {
             getConnection().createStatement().execute("DELETE FROM COMPANY");
-            getConnection().createStatement().execute("ALTER TABLE COMPANY ALTER COLUMN id RESTART WITH 1");
         } catch (SQLException ignored) {
             throw new WrongAnswer("Can't delete rows from the COMPANY table.");
+        }
+        try {
+            getConnection().createStatement().execute("ALTER TABLE COMPANY ALTER COLUMN id RESTART WITH 1");
+        } catch (SQLException ex) {
+            throw new WrongAnswer("Can't reset the ID column in the COMPANY table. " +
+                    "Make sure that this column is AUTO_INCREMENT");
         }
     }
 
     public void clearCarTable() {
         try {
             getConnection().createStatement().execute("DELETE FROM CAR");
-            getConnection().createStatement().execute("ALTER TABLE CAR ALTER COLUMN id RESTART WITH 1");
         } catch (SQLException ignored) {
             throw new WrongAnswer("Can't delete rows from the CAR table.");
+        }
+        try {
+            getConnection().createStatement().execute("ALTER TABLE CAR ALTER COLUMN id RESTART WITH 1");
+        } catch (SQLException ex) {
+            throw new WrongAnswer("Can't reset the ID column in the CAR table. " +
+                    "Make sure that this column is AUTO_INCREMENT");
         }
     }
 
