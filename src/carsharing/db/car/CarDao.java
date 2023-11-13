@@ -7,5 +7,6 @@ public interface CarDao {
     List<Car> findAvailableCarsByCompany(int companyId);
     void add(Car car);
     void rentCar(Car car);
-    void returnCar(Car car);
+    void returnCar(int carId);
+    Car getCarById(int carId);
 }

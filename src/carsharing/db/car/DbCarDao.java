@@ -5,6 +5,7 @@ import carsharing.db.DbClient;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DbCarDao implements CarDao {
     private DbClient dbClient;
@@ -16,6 +17,7 @@ public class DbCarDao implements CarDao {
             "foreign key (COMPANY_ID) references company(ID)" +
             ")";
     private final String SELECT_CARS = "SELECT * FROM CAR WHERE COMPANY_ID = %d";
+    private final String SELECT_CAR = "SELECT * FROM CAR WHERE ID = %d";
     private final String SELECT_AVAILABLE_CARS = "SELECT * FROM CAR WHERE COMPANY_ID = %d AND AVAILABLE IS TRUE";
     private final String ADD_CAR = "INSERT INTO CAR (NAME, COMPANY_ID, AVAILABLE) VALUES ('%s',%d, TRUE)";
     private final String RENT_CAR = "UPDATE CAR SET AVAILABLE = FALSE WHERE ID = %d";
@@ -53,7 +55,13 @@ public class DbCarDao implements CarDao {
     }
 
     @Override
-    public void returnCar(Car car) {
-        dbClient.run(String.format(RETURN_CAR, car.getId()));
+    public void returnCar(int carId) {
+        dbClient.run(String.format(RETURN_CAR, carId));
+    }
+
+    @Override
+    public Car getCarById(int carId) {
+        Map.Entry<Integer, String> entry = dbClient.select(String.format(SELECT_CAR, carId));
+        return new Car(entry.getKey(), entry.getValue());
     }
 }

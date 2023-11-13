@@ -32,9 +32,8 @@ public class ManagerMenu {
     private void listCompanies(Scanner sc) {
         List<Company> companyList = dbService.findAllCompanies();
         int input = dbService.getContext(companyList, "company", sc);
-        while ( input != 0) {
+        if (input != 0) {
             companyContext(sc, dbService.findCompanyById(input));
-            input = dbService.getContext(companyList, "company", sc);
         }
     }
 
@@ -49,7 +48,8 @@ public class ManagerMenu {
                     List<Car> carList = dbService.findAllCompanyCars(company);
                     if (!carList.isEmpty()) {
                         AtomicInteger index = new AtomicInteger(1);
-                        carList.forEach(c -> System.out.printf("%d. %s\n", index.getAndIncrement(),c));
+                        System.out.println("\nCar list:");
+                        carList.forEach(c -> System.out.printf("%d. %s\n", index.getAndIncrement(), c));
                     } else {
                         System.out.print("\nThe car list is empty!\n");
                     }

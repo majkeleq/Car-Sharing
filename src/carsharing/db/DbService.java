@@ -60,15 +60,15 @@ public class DbService {
     public int getContext(List<?> list, String listName, Scanner sc) {
         int input = 0;
         if (list.isEmpty()) {
-            System.out.printf("The %s list is empty!\n", listName);
+            System.out.printf("\nThe %s list is empty!\n", listName);
         } else {
             StringBuilder result = new StringBuilder();
             do {
                 result.setLength(0);
-                result.append(String.format("Choose %s:\n", listName));
+                result.append(String.format("\nChoose %s:\n", listName));
                 AtomicInteger index = new AtomicInteger(1);
                 list.forEach(o -> result.append(index.getAndIncrement()).append(". ").append(o.toString()).append("\n"));
-                result.append("0.Back");
+                result.append("0. Back");
                 System.out.println(result);
                 input = Integer.parseInt(sc.nextLine());
             } while (input < 0 || input > list.size());
@@ -78,6 +78,27 @@ public class DbService {
     public String rentCar(Customer customer, Car car) {
         dbCustomerDao.rentCar(customer,car);
         dbCarDao.rentCar(car);
-        return "You rented a car";
+        return String.format("\nYou rented '%s'", car.getName());
+    }
+
+    public String returnCar(Customer customer) {
+        String result = dbCustomerDao.returnCar(customer);
+        if (result.equals("null")) {
+            return "\nYou didn't rent a car!";
+        }
+        dbCarDao.returnCar(Integer.parseInt(result));
+        return "\nYou've returned a rented car!";
+    }
+    public String showRentedCar(Customer customer) {
+        String carId = dbCustomerDao.getCarId(customer);
+        System.out.println(carId);
+        if (carId.equals("null")) {
+            return "\nYou didn't rent a car!";
+        }
+        Car car = dbCarDao.getCarById(Integer.parseInt(carId));
+        return  "\nYour rented car:\n" +
+                car.getName() +
+                "\nCompany:\n" +
+                dbCompanyDao.findByCar(car).getName();
     }
 }

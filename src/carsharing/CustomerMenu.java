@@ -16,7 +16,7 @@ public class CustomerMenu {
     }
 
     public void addCustomer(Scanner sc) {
-        System.out.println("Enter the customer name:");
+        System.out.println("\nEnter the customer name:");
         Customer customer = new Customer(sc.nextLine());
         dbService.addCustomer(customer);
         System.out.println("The customer was added!");
@@ -33,16 +33,21 @@ public class CustomerMenu {
 
     public void rentCar(Scanner sc, Customer customer) {
         List<Company> companyList = dbService.findAllCompanies();
-        int input = dbService.getContext(companyList, "company", sc);
-        if (input > 0) {
-            List<Car> carList = dbService.findAllAvailableCompanyCars(companyList.get(input - 1));
-            input = dbService.getContext(carList, "car", sc);
+        int input;
+        do {
+            input = dbService.getContext(companyList, "company", sc);
             if (input > 0) {
-                System.out.println(dbService.rentCar(customer, carList.get(input - 1)));
+                List<Car> carList = dbService.findAllAvailableCompanyCars(companyList.get(input - 1));
+                int input2 = dbService.getContext(carList, "car", sc);
+                if (input2 > 0) {
+                    System.out.println(dbService.rentCar(customer, carList.get(input - 1)));
+                    input = 0;
+                }
             }
-        }
+        } while (input != 0);
 
     }
+
 
     public void customerMenu(Scanner sc, Customer customer) {
         boolean toContinue = true;
@@ -51,8 +56,8 @@ public class CustomerMenu {
             int input = Integer.parseInt(sc.nextLine());
             switch (input) {
                 case 1 -> rentCar(sc, customer);
-                case 2 -> System.out.println("Return a rented car");
-                case 3 -> System.out.println("My rented car");
+                case 2 -> System.out.println(dbService.returnCar(customer));
+                case 3 -> System.out.println(dbService.showRentedCar(customer));
                 case 0 -> toContinue = false;
 
             }

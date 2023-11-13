@@ -9,4 +9,6 @@ public interface CustomerDao {
     Customer findCustomer(int id);
     List<Customer> findAll();
     void rentCar(Customer customer, Car car);
+    String returnCar(Customer customer);
+    String getCarId(Customer customer);
 }

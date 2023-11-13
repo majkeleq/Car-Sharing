@@ -20,7 +20,8 @@ public class DbCustomerDao implements CustomerDao{
     private final String SELECT_CUSTOMER = "SELECT * FROM CUSTOMER WHERE ID = %d";
     private final String SELECT_CUSTOMERS = "SELECT * FROM CUSTOMER";
     private final String RENT_CAR = "UPDATE customer SET RENTED_CAR_ID = %d WHERE ID = %d";
-
+private final String SELECT_RENTED_CAR_ID = "SELECT RENTED_CAR_ID as ID, NAME FROM CUSTOMER WHERE ID = %d";
+private final String RETURN_CAR = "UPDATE CUSTOMER SET RENTED_CAR_ID = null WHERE ID = %d";
     public DbCustomerDao(DbClient dbClient) {
         this.dbClient = dbClient;
         dbClient.run(CREATE_CUSTOMER);
@@ -47,5 +48,19 @@ public class DbCustomerDao implements CustomerDao{
     @Override
     public void rentCar(Customer customer, Car car) {
         dbClient.run(String.format(RENT_CAR, car.getId(), customer.getId()));
+    }
+    @Override
+    public String returnCar(Customer customer) {
+        String carId = dbClient.select(String.format(SELECT_RENTED_CAR_ID,customer.getId())).getValue();
+        if (!carId.equals("null")) {
+            dbClient.run(String.format(RETURN_CAR,customer.getId()));
+        }
+        return carId;
+    }
+
+    @Override
+    public String getCarId(Customer customer) {
+        Integer result = dbClient.select(String.format(SELECT_RENTED_CAR_ID,customer.getId())).getKey();
+        return result == null ? "null" : result.toString();
     }
 }
