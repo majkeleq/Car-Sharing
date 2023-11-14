@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class DbCustomerDao implements CustomerDao{
     private DbClient dbClient;
-    private final String CREATE_CUSTOMER = "CREATE TABLE CUSTOMER(" +
+    private final String CREATE_CUSTOMER = "CREATE TABLE IF NOT EXISTS CUSTOMER(" +
             "ID INT PRIMARY KEY AUTO_INCREMENT," +
             "NAME VARCHAR_IGNORECASE(255) NOT NULL UNIQUE," +
             "RENTED_CAR_ID INT," +
@@ -50,17 +50,17 @@ private final String RETURN_CAR = "UPDATE CUSTOMER SET RENTED_CAR_ID = null WHER
         dbClient.run(String.format(RENT_CAR, car.getId(), customer.getId()));
     }
     @Override
-    public String returnCar(Customer customer) {
-        String carId = dbClient.select(String.format(SELECT_RENTED_CAR_ID,customer.getId())).getValue();
-        if (!carId.equals("null")) {
+    public Integer returnCar(Customer customer) {
+        Integer carId = dbClient.select(String.format(SELECT_RENTED_CAR_ID,customer.getId())).getKey();
+        if (carId != 0) {
             dbClient.run(String.format(RETURN_CAR,customer.getId()));
         }
         return carId;
     }
 
     @Override
-    public String getCarId(Customer customer) {
+    public Integer getCarId(Customer customer) {
         Integer result = dbClient.select(String.format(SELECT_RENTED_CAR_ID,customer.getId())).getKey();
-        return result == null ? "null" : result.toString();
+        return result;
     }
 }

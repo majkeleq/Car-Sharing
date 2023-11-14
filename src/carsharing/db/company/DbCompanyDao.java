@@ -8,7 +8,7 @@ import java.util.*;
 public class DbCompanyDao implements CompanyDao {
     private DbClient dbClient;
 
-    private final String CREATE_COMPANY = "CREATE TABLE COMPANY(" +
+    private final String CREATE_COMPANY = "CREATE TABLE IF NOT EXISTS COMPANY(" +
             "ID INT PRIMARY KEY AUTO_INCREMENT," +
             "NAME VARCHAR_IGNORECASE(255) NOT NULL UNIQUE)";
     private final String SELECT_COMPANIES = "SELECT * FROM COMPANY";

@@ -82,23 +82,25 @@ public class DbService {
     }
 
     public String returnCar(Customer customer) {
-        String result = dbCustomerDao.returnCar(customer);
-        if (result.equals("null")) {
+        Integer result = dbCustomerDao.returnCar(customer);
+        if (result == 0) {
             return "\nYou didn't rent a car!";
         }
-        dbCarDao.returnCar(Integer.parseInt(result));
+        dbCarDao.returnCar(result);
         return "\nYou've returned a rented car!";
     }
     public String showRentedCar(Customer customer) {
-        String carId = dbCustomerDao.getCarId(customer);
-        System.out.println(carId);
-        if (carId.equals("null")) {
+        Integer carId = dbCustomerDao.getCarId(customer);
+        if (carId == 0) {
             return "\nYou didn't rent a car!";
         }
-        Car car = dbCarDao.getCarById(Integer.parseInt(carId));
+        Car car = dbCarDao.getCarById(carId);
         return  "\nYour rented car:\n" +
                 car.getName() +
                 "\nCompany:\n" +
                 dbCompanyDao.findByCar(car).getName();
+    }
+    public boolean hasRentedCar(Customer cust) {
+        return dbCustomerDao.getCarId(cust) == 0 ? false : true;
     }
 }

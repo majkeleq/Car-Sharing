@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class DbCarDao implements CarDao {
     private DbClient dbClient;
-    private final String CREATE_CAR = "CREATE TABLE CAR(" +
+    private final String CREATE_CAR = "CREATE TABLE IF NOT EXISTS CAR(" +
             "ID INT PRIMARY KEY AUTO_INCREMENT," +
             "NAME VARCHAR_IGNORECASE(255) NOT NULL UNIQUE," +
             "COMPANY_ID INT NOT NULL," +

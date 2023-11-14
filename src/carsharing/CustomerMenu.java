@@ -34,6 +34,7 @@ public class CustomerMenu {
     public void rentCar(Scanner sc, Customer customer) {
         List<Company> companyList = dbService.findAllCompanies();
         int input;
+        if (!dbService.hasRentedCar(customer)) {
         do {
             input = dbService.getContext(companyList, "company", sc);
             if (input > 0) {
@@ -44,7 +45,10 @@ public class CustomerMenu {
                     input = 0;
                 }
             }
-        } while (input != 0);
+        } while (input != 0); }
+        else {
+            System.out.println("\nYou've already rented a car!");
+        }
 
     }
 
