@@ -60,7 +60,6 @@ private final String RETURN_CAR = "UPDATE CUSTOMER SET RENTED_CAR_ID = null WHER
 
     @Override
     public Integer getCarId(Customer customer) {
-        Integer result = dbClient.select(String.format(SELECT_RENTED_CAR_ID,customer.getId())).getKey();
-        return result;
+        return dbClient.select(String.format(SELECT_RENTED_CAR_ID,customer.getId())).getKey();
     }
 }

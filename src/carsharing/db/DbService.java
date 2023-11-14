@@ -101,6 +101,6 @@ public class DbService {
                 dbCompanyDao.findByCar(car).getName();
     }
     public boolean hasRentedCar(Customer cust) {
-        return dbCustomerDao.getCarId(cust) == 0 ? false : true;
+        return dbCustomerDao.getCarId(cust) != 0;
     }
 }
